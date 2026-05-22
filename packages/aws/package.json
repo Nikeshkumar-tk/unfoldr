@@ -1,0 +1,22 @@
+{
+  "name": "@unfoldr/aws",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.1041.0",
+    "@aws-sdk/client-dynamodb": "^3.1041.0",
+    "@aws-sdk/lib-dynamodb": "^3.700.0",
+    "@unfoldr/logger": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3"
+  }
+}

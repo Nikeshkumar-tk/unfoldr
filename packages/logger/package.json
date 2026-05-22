@@ -1,0 +1,16 @@
+{
+  "name": "@unfoldr/logger",
+  "version": "1.0.0",
+  "description": "Shared logger package using AWS Lambda Powertools",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@aws-lambda-powertools/logger": "^2.31.0"
+  }
+}

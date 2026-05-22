@@ -1,0 +1,17 @@
+{
+  "name": "@unfoldr/types",
+  "version": "1.0.0",
+  "description": "Shared types for lambda configs and handlers",
+  "main": "index.ts",
+  "type": "commonjs",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@unfoldr/logger": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.147"
+  }
+}

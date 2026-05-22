@@ -1,0 +1,27 @@
+{
+  "name": "@unfoldr/lambdas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "create-lambda": "ts-node scripts/create-lambda.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@unfoldr/github": "workspace:*",
+    "@unfoldr/logger": "workspace:*",
+    "@unfoldr/types": "workspace:*",
+    "@unfoldr/aws": "workspace:*",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.147",
+    "@types/node": "^22.15.3",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.7.2"
+  }
+}
