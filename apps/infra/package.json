@@ -20,6 +20,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@unfoldr/cloudfront-fns": "workspace:*",
     "@unfoldr/lambdas": "workspace:*",
     "@unfoldr/types": "workspace:*",
     "@aws-sdk/client-dynamodb": "^3.700.0",

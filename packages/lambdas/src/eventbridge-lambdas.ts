@@ -1,1 +1,1 @@
-// EventBridge trigger lambdas — add exports here as new lambdas are created
+export * as codebuildStatus from "./codebuild-status/config";

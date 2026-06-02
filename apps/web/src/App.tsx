@@ -9,6 +9,9 @@ import { VerifyEmailPage } from "./pages/VerifyEmailPage";
 import { CompleteProfilePage } from "./pages/CompleteProfilePage";
 import { OrganizationsPage } from "./pages/OrganizationsPage";
 import { DashboardPage } from "./pages/DashboardPage";
+import { OrganizationPage } from "./pages/OrganizationPage";
+import { ProjectsPage } from "./pages/ProjectsPage";
+import { ProjectDetailsPage } from "./pages/ProjectDetailsPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { AppShell } from "./components/AppShell";
 import { getOrgName } from "./lib/env";
@@ -77,15 +80,8 @@ export function App() {
         }
       >
         <Route path="/dashboard" element={<DashboardPage />} />
-        <Route
-          path="/projects"
-          element={
-            <PlaceholderPage
-              title="Projects"
-              description="Deploy and manage your projects."
-            />
-          }
-        />
+        <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
         <Route
           path="/deployments"
           element={
@@ -113,15 +109,7 @@ export function App() {
             />
           }
         />
-        <Route
-          path="/organization"
-          element={
-            <PlaceholderPage
-              title="Organization"
-              description="Manage your organization details."
-            />
-          }
-        />
+        <Route path="/organization" element={<OrganizationPage />} />
         <Route
           path="/activity"
           element={

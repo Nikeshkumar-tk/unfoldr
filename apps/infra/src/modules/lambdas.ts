@@ -18,6 +18,7 @@ import type {
 // Import all lambda barrel exports
 import * as httpApiLambdas from "@unfoldr/lambdas/src/http-api-lambdas";
 import * as cognitoLambdas from "@unfoldr/lambdas/src/cognito-lambdas";
+import * as eventBridgeLambdas from "@unfoldr/lambdas/src/eventbridge-lambdas";
 
 export class LambdasConstruct extends Construct {
   public readonly httpApiLambdas: HttpApiLambdaFn[] = [];
@@ -39,9 +40,9 @@ export class LambdasConstruct extends Construct {
     const allConfigModules = [
       ...Object.values(httpApiLambdas),
       ...Object.values(cognitoLambdas),
+      ...Object.values(eventBridgeLambdas),
       // Add other barrel imports here as lambdas are created:
       // ...Object.values(sqsLambdas),
-      // ...Object.values(eventBridgeLambdas),
     ] as Array<{ config: LambdaConfig }>;
 
     for (const { config } of allConfigModules) {

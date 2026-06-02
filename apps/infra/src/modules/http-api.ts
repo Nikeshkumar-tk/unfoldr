@@ -20,7 +20,7 @@ export class HttpApiConstruct extends Construct {
     super(scope, id);
 
     this.httpApi = new apigwv2.HttpApi(this, id, {
-      apiName: createResourceName({ name: "unfoldr-http-api" }),
+      apiName: createResourceName({ name: "http-api" }),
       corsPreflight: {
         allowOrigins: ["*"],
         allowMethods: [

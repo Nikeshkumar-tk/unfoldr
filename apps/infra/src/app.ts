@@ -5,7 +5,7 @@ import { createResourceName } from "./utils/common";
 
 const app = new cdk.App();
 
-new UnfoldrStack(app, createResourceName({ name: "unfoldr-stack" }), {
+new UnfoldrStack(app, createResourceName({ name: "root-stack" }), {
   env: {
     account: CONFIGS.ACCOUNT_ID,
     region: CONFIGS.REGION,

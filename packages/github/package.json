@@ -9,8 +9,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "@octokit/rest": "^22.0.1"
+    "@octokit/auth-app": "^8.2.0",
+    "@octokit/rest": "^22.0.1",
+    "@unfoldr/aws": "workspace:*",
+    "@unfoldr/logger": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3"
   }
 }

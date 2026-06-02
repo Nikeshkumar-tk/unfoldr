@@ -1,4 +1,10 @@
+export * as deployments from "./deployments/config";
 export * as healthCheck from "./health-check/config";
 export * as usersMe from "./users-me/config";
 export * as orgs from "./orgs/config";
 export * as orgUsers from "./org-users/config";
+export * as github from "./github/config";
+export * as orgGithubConnection from "./org-github-connection/config";
+export * as projects from "./projects/config";
+export * as repos from "./repos/config";
+export * as stages from "./stages/config";

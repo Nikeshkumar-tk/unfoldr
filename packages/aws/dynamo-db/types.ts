@@ -13,6 +13,12 @@ export type DbBaseType<T extends string = never> = {
   SK: string;
 } & Partial<GSIKeys<T>>;
 
+export type ActedUser = {
+  name: string;
+  id: string;
+  email: string;
+};
+
 export type GetItem = {
   tableName?: string;
   pk: string;

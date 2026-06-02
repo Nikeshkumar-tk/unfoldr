@@ -6,14 +6,20 @@ import type {
   HttpDataByMethod,
   HttpLambdaHandler,
   APIGatewayProxyEventV2,
+  APIGatewayProxyResultV2,
 } from "@unfoldr/types/handler";
 import { ZodError, type ZodType } from "zod";
 import { formatZodErrors, lambdaResponse } from "./utils";
 
-/**
- * Per-method Zod schemas. Keys are typed HttpMethod values (e.g. `HttpMethod.POST`).
- */
 export type HttpSchemas = Partial<Record<HttpMethod, ZodType>>;
+
+function isApiGatewayResult(result: unknown): result is APIGatewayProxyResultV2 {
+  return (
+    typeof result === "object" &&
+    result !== null &&
+    "statusCode" in result
+  );
+}
 
 export const createHttpHandler = <
   TMap extends HttpDataByMethod = HttpDataByMethod,
@@ -30,10 +36,6 @@ export const createHttpHandler = <
     const logger = new Logger({ serviceName: config.name });
 
     try {
-      // Validate the request method against the lambda's declared methods.
-      // If the route is wired correctly in infra this can only fail when
-      // someone hits the lambda directly or the config was changed without
-      // redeploying — either way, 405 is the right answer.
       const method = matchAllowedMethod(
         event.requestContext.http.method,
         config.methods,
@@ -47,9 +49,6 @@ export const createHttpHandler = <
         });
       }
 
-      // We build up the enriched event dynamically; the typed branch is what
-      // the handler sees. Casting to `any` here keeps the internals simple
-      // without weakening the public API.
       const enrichedEvent = event as APIGatewayProxyEventV2 & {
         method: HttpMethod;
         data: unknown;
@@ -57,7 +56,6 @@ export const createHttpHandler = <
       };
       enrichedEvent.method = method;
 
-      // Per-method schema validation. GET uses query params, everything else uses body.
       const schema = schemas?.[method];
       if (schema) {
         const rawData =
@@ -67,7 +65,6 @@ export const createHttpHandler = <
         enrichedEvent.data = schema.parse(rawData);
       }
 
-      // Auth: extract userId from JWT claims
       if (config.authorized) {
         enrichedEvent.userId = (
           event.requestContext as any
@@ -77,6 +74,11 @@ export const createHttpHandler = <
       const result = await (
         handler as (ctx: { event: unknown; logger: Logger }) => Promise<unknown>
       )({ event: enrichedEvent, logger });
+
+      if (isApiGatewayResult(result)) {
+        return result;
+      }
+
       return lambdaResponse({ data: result, status: 200 });
     } catch (error) {
       if (error instanceof HttpError) {
