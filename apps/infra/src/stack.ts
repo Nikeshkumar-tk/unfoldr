@@ -8,6 +8,7 @@ import { WebAppConstruct } from "./modules/web-app";
 import { HostingConstruct } from "./modules/hosting";
 import { EventBridgeConstruct } from "./modules/eventbridge";
 import { AcmCertificateConstruct } from "./modules/acm-certificate";
+import { Route53Construct } from "./modules/route53";
 
 export class UnfoldrStack extends cdk.Stack {
   lambdas: LambdasConstruct;
@@ -18,6 +19,7 @@ export class UnfoldrStack extends cdk.Stack {
   hosting: HostingConstruct;
   eventBridge: EventBridgeConstruct;
   certificate: AcmCertificateConstruct;
+  route53: Route53Construct;
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -62,7 +64,13 @@ export class UnfoldrStack extends cdk.Stack {
       certificate: this.certificate.certificate,
     });
 
-    // 7. Wire EventBridge rules to event-driven lambdas
+    // 7. Wire Route 53 records: wildcard for deployments, prefixed host for web console
+    this.route53 = new Route53Construct(this, "Route53", {
+      deploymentDistribution: this.hosting.deploymentDistribution,
+      webAppDistribution: this.webApp.distribution,
+    });
+
+    // 8. Wire EventBridge rules to event-driven lambdas
     this.eventBridge = new EventBridgeConstruct(this, "EventBridge", {
       eventBridgeLambdas: this.lambdas.eventBridgeLambdas,
     });
