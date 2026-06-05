@@ -14,10 +14,16 @@ export enum PackageManager {
   pnpm = "pnpm",
 }
 
+export enum DeploymentMode {
+  shared = "shared",
+  dedicated = "dedicated",
+}
+
 export const createProjectSchema = z.object({
   projectName: z.string().min(1, "Project name is required").max(100),
   projectType: z.nativeEnum(ProjectType),
   repoFullName: z.string().min(1, "Repository is required"),
+  deploymentMode: z.nativeEnum(DeploymentMode),
   config: z.object({
     framework: z.nativeEnum(Framework),
     packageManager: z.nativeEnum(PackageManager),

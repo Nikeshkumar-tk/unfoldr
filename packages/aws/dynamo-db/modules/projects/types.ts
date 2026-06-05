@@ -11,6 +11,17 @@ export enum PackageManager {
   pnpm = "pnpm",
 }
 
+export enum DeploymentMode {
+  Shared = "shared",
+  Dedicated = "dedicated",
+}
+
+export type DedicatedHosting = {
+  bucketName: string;
+  distributionId: string;
+  distributionDomainName: string;
+};
+
 export type LastDeploymentDetail = Omit<Deployment, "PK" | "SK">;
 
 export type ReactAppDeploymentInfo = {
@@ -39,6 +50,8 @@ export type Project = {
   createdBy: ActedUser;
   updatedBy: ActedUser;
   orgId: string;
+  deploymentMode: DeploymentMode;
+  dedicatedHosting?: DedicatedHosting;
   lastDeploymentDetails?: LastDeploymentDetail;
   deploymentInfo?: DeploymentInfo[];
 } & Partial<DbBaseType<"GSI1">>;

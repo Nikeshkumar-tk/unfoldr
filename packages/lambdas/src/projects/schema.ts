@@ -1,6 +1,10 @@
 import z from "zod";
 import { HttpMethod } from "@unfoldr/types/http";
-import { ProjectType, PackageManager } from "@unfoldr/aws/dynamo-db/modules/projects/types";
+import {
+  ProjectType,
+  PackageManager,
+  DeploymentMode,
+} from "@unfoldr/aws/dynamo-db/modules/projects/types";
 
 const configSchema = z.object({
   framework: z.literal("vite"),
@@ -17,6 +21,7 @@ export const createProjectSchema = z.object({
     projectName: z.string().min(1).max(100),
     repoFullName: z.string().min(1),
     config: configSchema,
+    deploymentMode: z.nativeEnum(DeploymentMode),
   }),
 });
 

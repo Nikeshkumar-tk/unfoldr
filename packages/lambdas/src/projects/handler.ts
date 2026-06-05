@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { HttpMethod } from "@unfoldr/types/http";
 import { HttpError, NotFoundError, ForbiddenError } from "@unfoldr/types/errors";
 import type { HttpLambdaHandler } from "@unfoldr/types/handler";
@@ -7,6 +8,8 @@ import {
   deleteProject,
   queryProjectsByOrg,
 } from "@unfoldr/aws/dynamo-db/modules/projects";
+import { DeploymentMode } from "@unfoldr/aws/dynamo-db/modules/projects/types";
+import { provisionDedicatedHosting } from "@unfoldr/aws/hosting";
 import { getOrgById } from "@unfoldr/aws/dynamo-db/modules/organizations";
 import { listUsersInOrg } from "@unfoldr/aws/dynamo-db/modules/org-users";
 import { getUserById } from "@unfoldr/aws/dynamo-db/modules/users";
@@ -50,14 +53,32 @@ export const _handler: HttpLambdaHandler<ProjectsData> = async ({
       throw new NotFoundError("User not found");
     }
 
+    const projectId = crypto.randomUUID();
+
+    let dedicatedHosting;
+    if (data.deploymentMode === DeploymentMode.Dedicated) {
+      const accountId = process.env.ACCOUNT_ID;
+      if (!accountId) {
+        throw new HttpError(500, "ACCOUNT_ID env var is not set");
+      }
+      dedicatedHosting = await provisionDedicatedHosting({
+        logger,
+        projectId,
+        accountId,
+      });
+    }
+
     const project = await createProject({
       logger,
       orgId,
+      projectId,
       user: { id: user.userId, name: user.name, email: user.email },
       projectType: data.projectType,
       projectName: data.projectName,
       repoFullName: data.repoFullName,
       config: data.config,
+      deploymentMode: data.deploymentMode,
+      dedicatedHosting,
     });
 
     return { project };

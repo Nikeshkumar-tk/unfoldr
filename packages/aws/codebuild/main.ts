@@ -20,6 +20,7 @@ export const triggerBuild = async ({
   outputDir,
   s3Bucket,
   projectId,
+  deploymentId,
   environmentVariables = {},
 }: {
   logger: Logger;
@@ -32,6 +33,7 @@ export const triggerBuild = async ({
   outputDir: string;
   s3Bucket: string;
   projectId: string;
+  deploymentId: string;
   environmentVariables?: Record<string, string>;
 }) => {
   const envVarsOverride: EnvironmentVariable[] = [
@@ -43,6 +45,7 @@ export const triggerBuild = async ({
     { name: "OUTPUT_DIR", value: outputDir, type: "PLAINTEXT" },
     { name: "S3_BUCKET", value: s3Bucket, type: "PLAINTEXT" },
     { name: "PROJECT_ID", value: projectId, type: "PLAINTEXT" },
+    { name: "DEPLOYMENT_ID", value: deploymentId, type: "PLAINTEXT" },
   ];
 
   console.log(

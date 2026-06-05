@@ -143,6 +143,7 @@ export const createBuild = async ({
   orgId,
   logger,
   projectId,
+  deploymentId,
   stageId,
 }: {
   orgId: string;
@@ -198,8 +199,10 @@ export const createBuild = async ({
     installCommand: project.config.installCommand,
     buildCommand: project.config.buildCommand,
     outputDir: project.config.outputDir,
-    s3Bucket: process.env.DEPLOYMENTS_S3_BUCKET!,
+    s3Bucket: project.dedicatedHosting?.bucketName
+      ?? process.env.DEPLOYMENTS_S3_BUCKET!,
     projectId,
+    deploymentId,
     logger,
   });
   return response;

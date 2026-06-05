@@ -1,26 +1,38 @@
 import { Logger } from "@unfoldr/logger";
-import { Project, ProjectType, ProjectConfig } from "./types";
+import {
+  Project,
+  ProjectType,
+  ProjectConfig,
+  DeploymentInfo,
+  DeploymentMode,
+  DedicatedHosting,
+} from "./types";
 import { projectKeys } from "./keys";
 import { ActedUser } from "../../types";
-import crypto from "crypto";
 import { getDdbItem, putDdbItem, queryDdbItems, updateItem, deleteDdbItem } from "../../client";
 
 export const createProject = async ({
   logger,
   user,
   orgId,
+  projectId,
   projectType,
   projectName,
   repoFullName,
   config,
+  deploymentMode,
+  dedicatedHosting,
 }: {
   logger: Logger;
   orgId: string;
+  projectId: string;
   user: ActedUser;
   projectType: ProjectType;
   projectName: string;
   repoFullName: string;
   config: ProjectConfig;
+  deploymentMode: DeploymentMode;
+  dedicatedHosting?: DedicatedHosting;
 }) => {
   const isDuplicate = await isDuplicateProjectExists(projectName, logger);
 
@@ -31,7 +43,6 @@ export const createProject = async ({
   }
 
   const now = Date.now();
-  const projectId = crypto.randomUUID();
 
   const projectItem: Project = {
     PK: projectKeys.PK({ orgId }),
@@ -40,6 +51,8 @@ export const createProject = async ({
     projectType,
     repoFullName,
     config,
+    deploymentMode,
+    ...(dedicatedHosting ? { dedicatedHosting } : {}),
     createdAt: now,
     updatedAt: now,
     createdBy: user,
@@ -53,7 +66,7 @@ export const createProject = async ({
     `Creating project with ID ${projectId} for organization ${orgId}`,
   );
 
-  return await putDdbItem({
+  await putDdbItem({
     item: projectItem,
     logger,
     options: {
@@ -62,6 +75,8 @@ export const createProject = async ({
       },
     },
   });
+
+  return projectItem;
 };
 
 export const isDuplicateProjectExists = async (
@@ -162,6 +177,34 @@ export const updateProject = async ({
   });
 
   logger.info("Updating project", { projectId, orgId });
+
+  return getDdbItem<Project>({
+    pk: projectKeys.PK({ orgId }),
+    sk: projectKeys.SK({ projectId }),
+    logger,
+  });
+};
+
+export const setProjectDeploymentInfo = async ({
+  logger,
+  orgId,
+  projectId,
+  deploymentInfo,
+}: {
+  logger: Logger;
+  orgId: string;
+  projectId: string;
+  deploymentInfo: DeploymentInfo;
+}) => {
+  await updateItem({
+    pk: projectKeys.PK({ orgId }),
+    sk: projectKeys.SK({ projectId }),
+    attributesToUpdate: {
+      deploymentInfo: [deploymentInfo],
+      updatedAt: Date.now(),
+    },
+    logger,
+  });
 
   return getDdbItem<Project>({
     pk: projectKeys.PK({ orgId }),

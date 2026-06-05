@@ -1,4 +1,5 @@
 import * as cdk from "aws-cdk-lib";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 import { LambdasConstruct } from "./modules/lambdas";
 import { CognitoConstruct } from "./modules/cognito";
@@ -9,6 +10,8 @@ import { HostingConstruct } from "./modules/hosting";
 import { EventBridgeConstruct } from "./modules/eventbridge";
 import { AcmCertificateConstruct } from "./modules/acm-certificate";
 import { Route53Construct } from "./modules/route53";
+import { ExternalDnsConstruct } from "./modules/external-dns";
+import { CONFIGS } from "./config";
 
 export class UnfoldrStack extends cdk.Stack {
   lambdas: LambdasConstruct;
@@ -19,7 +22,7 @@ export class UnfoldrStack extends cdk.Stack {
   hosting: HostingConstruct;
   eventBridge: EventBridgeConstruct;
   certificate: AcmCertificateConstruct;
-  route53: Route53Construct;
+  route53?: Route53Construct;
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -42,10 +45,52 @@ export class UnfoldrStack extends cdk.Stack {
     const dataLambdas = [
       ...this.lambdas.httpApiLambdas,
       ...this.lambdas.cognitoLambdas,
+      ...this.lambdas.eventBridgeLambdas,
     ];
     this.dynamoDb = new DynamoDbConstruct(this, "DynamoDb", {
       lambdaFns: dataLambdas,
     });
+
+    const codebuildStatusLambda = this.lambdas.eventBridgeLambdas.find(
+      ({ config }) => config.name === "codebuild-status",
+    );
+    if (codebuildStatusLambda) {
+      codebuildStatusLambda.fn.addEnvironment(
+        "DOMAIN_NAME",
+        process.env.DOMAIN_NAME ?? "",
+      );
+    }
+
+    const projectsLambda = this.lambdas.httpApiLambdas.find(
+      ({ config }) => config.name === "projects",
+    );
+    if (projectsLambda) {
+      projectsLambda.fn.addEnvironment(
+        "ACCOUNT_ID",
+        process.env.ACCOUNT_ID ?? "",
+      );
+      projectsLambda.fn.addToRolePolicy(
+        new iam.PolicyStatement({
+          actions: [
+            "s3:CreateBucket",
+            "s3:PutBucketPolicy",
+            "s3:PutEncryptionConfiguration",
+            "s3:PutBucketPublicAccessBlock",
+          ],
+          resources: ["arn:aws:s3:::unfoldr-dedicated-*"],
+        }),
+      );
+      projectsLambda.fn.addToRolePolicy(
+        new iam.PolicyStatement({
+          actions: [
+            "cloudfront:CreateDistribution",
+            "cloudfront:CreateOriginAccessControl",
+            "cloudfront:GetDistribution",
+          ],
+          resources: ["*"],
+        }),
+      );
+    }
 
     this.certificate = new AcmCertificateConstruct(this, "AcmCertificate");
 
@@ -64,11 +109,19 @@ export class UnfoldrStack extends cdk.Stack {
       certificate: this.certificate.certificate,
     });
 
-    // 7. Wire Route 53 records: wildcard for deployments, prefixed host for web console
-    this.route53 = new Route53Construct(this, "Route53", {
-      deploymentDistribution: this.hosting.deploymentDistribution,
-      webAppDistribution: this.webApp.distribution,
-    });
+    // 7. DNS: Route 53 records when DNS_PROVIDER=route53, otherwise emit CfnOutputs
+    //    so the operator can wire CNAMEs at their external DNS provider.
+    if (CONFIGS.DNS_PROVIDER === "route53") {
+      this.route53 = new Route53Construct(this, "Route53", {
+        deploymentDistribution: this.hosting.deploymentDistribution,
+        webAppDistribution: this.webApp.distribution,
+      });
+    } else {
+      new ExternalDnsConstruct(this, "ExternalDns", {
+        deploymentDistribution: this.hosting.deploymentDistribution,
+        webAppDistribution: this.webApp.distribution,
+      });
+    }
 
     // 8. Wire EventBridge rules to event-driven lambdas
     this.eventBridge = new EventBridgeConstruct(this, "EventBridge", {

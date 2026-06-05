@@ -45,6 +45,21 @@ export class HostingConstruct extends Construct {
     serviceRole.addToPrincipalPolicy(
       new iam.PolicyStatement({
         actions: [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:DeleteObject",
+          "s3:ListBucket",
+        ],
+        resources: [
+          "arn:aws:s3:::unfoldr-dedicated-*",
+          "arn:aws:s3:::unfoldr-dedicated-*/*",
+        ],
+      }),
+    );
+
+    serviceRole.addToPrincipalPolicy(
+      new iam.PolicyStatement({
+        actions: [
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents",

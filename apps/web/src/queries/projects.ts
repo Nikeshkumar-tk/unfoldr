@@ -17,11 +17,19 @@ export type ProjectConfig = {
   outputDir: string;
 };
 
+export type DedicatedHosting = {
+  bucketName: string;
+  distributionId: string;
+  distributionDomainName: string;
+};
+
 export interface Project {
   projectName: string;
   projectType: string;
   repoFullName: string;
   config: ProjectConfig;
+  deploymentMode: "shared" | "dedicated";
+  dedicatedHosting?: DedicatedHosting;
   createdAt: number;
   updatedAt: number;
   createdBy: { name: string; id: string; email: string };
@@ -45,6 +53,7 @@ export interface CreateProjectInput {
   projectType: string;
   repoFullName: string;
   config: ProjectConfig;
+  deploymentMode: "shared" | "dedicated";
 }
 
 export const projectsKeys = {
@@ -82,6 +91,7 @@ export function useCreateProjectMutation() {
             projectType: input.projectType,
             repoFullName: input.repoFullName,
             config: input.config,
+            deploymentMode: input.deploymentMode,
           },
         },
       });

@@ -354,6 +354,7 @@ export function ProjectDetailsPage() {
 
   const deployments = deploymentsQuery.data ?? [];
   const lastDeployment = project.lastDeploymentDetails;
+  const deployedUrl = project.deploymentInfo?.[0]?.cloudfrontUrl;
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
@@ -400,6 +401,29 @@ export function ProjectDetailsPage() {
               <h1 className="text-xl font-semibold tracking-tight">
                 {project.projectName}
               </h1>
+              {deployedUrl && (
+                <a
+                  href={deployedUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 mt-1 text-sm font-medium text-primary hover:underline"
+                >
+                  {deployedUrl}
+                  <svg
+                    className="h-3.5 w-3.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                    />
+                  </svg>
+                </a>
+              )}
               <div className="flex flex-wrap items-center gap-2 mt-1.5 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1.5">
                   <svg

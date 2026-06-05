@@ -8,8 +8,15 @@ import {
   useCreateProjectMutation,
 } from "../queries/projects";
 import { useReposSearch } from "../queries/repos";
-import { createProjectSchema, ProjectType, Framework, PackageManager } from "../schemas/project";
+import {
+  createProjectSchema,
+  ProjectType,
+  Framework,
+  PackageManager,
+  DeploymentMode,
+} from "../schemas/project";
 import type { CreateProjectValues } from "../schemas/project";
+import { cn } from "../lib/cn";
 import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -46,6 +53,7 @@ export function ProjectsPage() {
       projectName: "",
       projectType: ProjectType.ReactApp,
       repoFullName: "",
+      deploymentMode: DeploymentMode.shared,
       config: {
         framework: Framework.vite,
         packageManager: PackageManager.npm,
@@ -63,6 +71,7 @@ export function ProjectsPage() {
         projectType: values.projectType,
         repoFullName: values.repoFullName,
         config: values.config,
+        deploymentMode: values.deploymentMode,
       },
       {
         onSuccess: () => {
@@ -167,6 +176,62 @@ export function ProjectsPage() {
                   <p className="text-sm text-destructive">{form.formState.errors.repoFullName.message}</p>
                 )}
               </div>
+
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider pt-2">
+                Deployment Mode
+              </h3>
+              <Controller
+                name="deploymentMode"
+                control={form.control}
+                render={({ field }) => (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {[
+                      {
+                        value: DeploymentMode.shared,
+                        title: "Shared",
+                        note: "Serves on a subdomain of the platform's domain (e.g. my-app.example.com). Uses a shared S3 bucket and CloudFront distribution. Fastest to provision, no extra AWS costs.",
+                      },
+                      {
+                        value: DeploymentMode.dedicated,
+                        title: "Dedicated",
+                        note: "Creates a private S3 bucket and a dedicated CloudFront distribution for this project. Served on its own *.cloudfront.net URL (no custom domain). Use when you need isolation, custom origin behaviors, or stricter access boundaries.",
+                      },
+                    ].map((opt) => {
+                      const selected = field.value === opt.value;
+                      return (
+                        <button
+                          key={opt.value}
+                          type="button"
+                          onClick={() => field.onChange(opt.value)}
+                          className={cn(
+                            "text-left p-3 rounded-md border transition-colors",
+                            selected
+                              ? "border-primary bg-primary/5"
+                              : "border-border hover:border-muted-foreground/40",
+                          )}
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-sm font-medium">
+                              {opt.title}
+                            </span>
+                            <span
+                              className={cn(
+                                "h-4 w-4 rounded-full border-2 shrink-0",
+                                selected
+                                  ? "border-primary bg-primary"
+                                  : "border-muted-foreground/40",
+                              )}
+                            />
+                          </div>
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            {opt.note}
+                          </p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              />
 
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider pt-2">
                 Build Configuration
