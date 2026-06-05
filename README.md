@@ -31,41 +31,11 @@ Unfoldr is the second option, productized and open-sourced. One `cdk deploy` fro
 
 Everything runs serverless on AWS — there are no always-on servers to babysit, and you only pay for what you use.
 
-```
-                           ┌─────────────────────────┐
-                           │   Operator Console      │
-                           │   (React + Vite, on     │
-                           │    S3 + CloudFront)     │
-                           └──────────┬──────────────┘
-                                      │ JWT (Cognito)
-                                      ▼
-   ┌────────────┐            ┌─────────────────┐            ┌───────────────┐
-   │  Cognito   │◀───────────│   HTTP API      │───────────▶│   DynamoDB    │
-   │ User Pool  │  authorize │  (API Gateway   │   read/    │ single-table  │
-   └────────────┘            │   + Lambdas)    │   write    └───────────────┘
-                             └────────┬────────┘
-                                      │ triggers build
-                                      ▼
-                             ┌─────────────────┐
-                             │   CodeBuild     │  builds app from GitHub,
-                             │   per project   │  uploads bundle to S3
-                             └────────┬────────┘
-                                      │ status events
-                                      ▼
-                             ┌─────────────────┐            ┌───────────────┐
-                             │  EventBridge    │───────────▶│   Lambdas     │
-                             └─────────────────┘            │ (status sync) │
-                                                            └───────────────┘
-                                      ┌──────────────────────────┐
-                                      ▼                          ▼
-                             ┌─────────────────┐        ┌─────────────────┐
-                             │  S3 (per-app    │◀───────│   CloudFront    │
-                             │   bundle)       │ origin │  + ACM cert     │
-                             └─────────────────┘        └─────────────────┘
-                                                                ▲
-                                                                │
-                                                       Route 53 / external DNS
-```
+![Unfoldr architecture](docs/architecture.drawio)
+
+> The source diagram lives at [docs/architecture.drawio](docs/architecture.drawio). Open it in [diagrams.net](https://app.diagrams.net) (or the **Draw.io Integration** VS Code extension) to edit. To embed a rendered version inline, export the diagram as `docs/architecture.png` from draw.io and the image reference above will pick it up.
+>
+> **Flow at a glance:** Operators sign in to the React console (S3 + CloudFront) and authenticate via Cognito. The console calls the HTTP API (API Gateway + Lambda) which reads/writes DynamoDB and talks to GitHub through the self-installed GitHub App. Creating a project triggers a per-project CodeBuild job that clones the repo, builds the bundle, and uploads it to a dedicated S3 bucket fronted by CloudFront + ACM. CodeBuild status flows through EventBridge into a Lambda that syncs deployment records back to DynamoDB. DNS is wired through Route 53 or your external provider. The whole stack is defined in one AWS CDK app.
 
 ### Tech stack
 
