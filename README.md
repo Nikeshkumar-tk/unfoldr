@@ -31,9 +31,9 @@ Unfoldr is the second option, productized and open-sourced. One `cdk deploy` fro
 
 Everything runs serverless on AWS — there are no always-on servers to babysit, and you only pay for what you use.
 
-![Unfoldr architecture](docs/architecture.drawio)
+![Unfoldr architecture](docs/architecture.svg)
 
-> The source diagram lives at [docs/architecture.drawio](docs/architecture.drawio). Open it in [diagrams.net](https://app.diagrams.net) (or the **Draw.io Integration** VS Code extension) to edit. To embed a rendered version inline, export the diagram as `docs/architecture.png` from draw.io and the image reference above will pick it up.
+> The editable source lives at [docs/architecture.drawio](docs/architecture.drawio) — open it in [diagrams.net](https://app.diagrams.net) (or the **Draw.io Integration** VS Code extension) to modify. The rendered diagram above is [docs/architecture.svg](docs/architecture.svg); regenerate it via **File → Export As → SVG** in draw.io after any change.
 >
 > **Flow at a glance:** Operators sign in to the React console (S3 + CloudFront) and authenticate via Cognito. The console calls the HTTP API (API Gateway + Lambda) which reads/writes DynamoDB and talks to GitHub through the self-installed GitHub App. Creating a project triggers a per-project CodeBuild job that clones the repo, builds the bundle, and uploads it to a dedicated S3 bucket fronted by CloudFront + ACM. CodeBuild status flows through EventBridge into a Lambda that syncs deployment records back to DynamoDB. DNS is wired through Route 53 or your external provider. The whole stack is defined in one AWS CDK app.
 

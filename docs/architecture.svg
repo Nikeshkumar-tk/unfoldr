@@ -1,0 +1,229 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#374151"/>
+    </marker>
+    <marker id="arrow-dashed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#9673a6"/>
+    </marker>
+    <style>
+      .zone-label { font-weight: 600; font-size: 13px; }
+      .node { stroke-width: 1.5; rx: 8; ry: 8; }
+      .node-label { fill: #ffffff; font-weight: 600; font-size: 11px; text-anchor: middle; }
+      .node-sub { fill: #ffffff; font-size: 10px; text-anchor: middle; opacity: 0.95; }
+      .edge { fill: none; stroke: #374151; stroke-width: 1.6; }
+      .edge-dashed { fill: none; stroke: #9673a6; stroke-width: 1.4; stroke-dasharray: 5 4; }
+      .edge-label { fill: #4b5563; font-size: 10px; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="900" fill="#ffffff"/>
+
+  <text x="700" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#232F3E">Unfoldr — Self-Hosted Deployment Platform on AWS</text>
+
+  <rect x="40" y="70" width="240" height="210" rx="10" ry="10" fill="#eef4fc" stroke="#6c8ebf" stroke-dasharray="6 4"/>
+  <text x="160" y="92" text-anchor="middle" class="zone-label" fill="#1f4f8b">Operators &amp; End Users</text>
+  <circle cx="100" cy="140" r="18" fill="#1f77b4"/>
+  <text x="100" y="146" class="node-label">OP</text>
+  <text x="100" y="180" text-anchor="middle" font-size="11" fill="#1f4f8b">Operator</text>
+  <text x="100" y="195" text-anchor="middle" font-size="10" fill="#4b5563">(startup team)</text>
+  <circle cx="220" cy="140" r="18" fill="#1f77b4"/>
+  <text x="220" y="146" class="node-label">EU</text>
+  <text x="220" y="180" text-anchor="middle" font-size="11" fill="#1f4f8b">End Users</text>
+  <text x="220" y="195" text-anchor="middle" font-size="10" fill="#4b5563">(app visitors)</text>
+
+  <rect x="40" y="300" width="240" height="200" rx="10" ry="10" fill="#f5f5f5" stroke="#666666" stroke-dasharray="6 4"/>
+  <text x="160" y="322" text-anchor="middle" class="zone-label" fill="#24292e">GitHub</text>
+  <rect x="70" y="345" width="180" height="55" class="node" fill="#24292e" stroke="#0d1117"/>
+  <text x="160" y="370" class="node-label">GitHub App</text>
+  <text x="160" y="386" class="node-sub">self-installed</text>
+  <rect x="70" y="420" width="180" height="55" class="node" fill="#24292e" stroke="#0d1117"/>
+  <text x="160" y="445" class="node-label">Source Repos</text>
+  <text x="160" y="461" class="node-sub">React apps to deploy</text>
+
+  <rect x="310" y="70" width="1050" height="800" rx="14" ry="14" fill="#fff8e1" stroke="#d6b656" stroke-dasharray="8 4"/>
+  <text x="330" y="92" class="zone-label" fill="#8a6d00">AWS Account (yours)</text>
+
+  <rect x="340" y="110" width="290" height="180" rx="10" ry="10" fill="#e5f3e1" stroke="#82b366" stroke-dasharray="5 3"/>
+  <text x="485" y="132" text-anchor="middle" class="zone-label" fill="#3f6b2c">Operator Console</text>
+  <rect x="370" y="150" width="110" height="65" class="node" fill="#945DF2" stroke="#5e3aa8"/>
+  <text x="425" y="180" class="node-label">CloudFront</text>
+  <text x="425" y="196" class="node-sub">console.example</text>
+  <rect x="510" y="150" width="110" height="65" class="node" fill="#7AA116" stroke="#4a6310"/>
+  <text x="565" y="180" class="node-label">S3 Bucket</text>
+  <text x="565" y="196" class="node-sub">React+Vite bundle</text>
+  <text x="485" y="240" text-anchor="middle" font-size="10" fill="#3f6b2c">React 19 · Vite 8 · TanStack Query · Tailwind v4</text>
+  <text x="485" y="256" text-anchor="middle" font-size="10" fill="#3f6b2c">Amplify Auth · React Hook Form + Zod</text>
+
+  <rect x="660" y="110" width="180" height="180" rx="10" ry="10" fill="#ede1f0" stroke="#9673a6" stroke-dasharray="5 3"/>
+  <text x="750" y="132" text-anchor="middle" class="zone-label" fill="#6a4885">Auth</text>
+  <rect x="690" y="160" width="120" height="65" class="node" fill="#DD344C" stroke="#8a1d2e"/>
+  <text x="750" y="190" class="node-label">Cognito</text>
+  <text x="750" y="206" class="node-sub">User Pool + JWT</text>
+  <text x="750" y="250" text-anchor="middle" font-size="10" fill="#6a4885">User Pool + Client</text>
+  <text x="750" y="266" text-anchor="middle" font-size="10" fill="#6a4885">JWT authorizer on HTTP API</text>
+
+  <rect x="340" y="320" width="500" height="220" rx="10" ry="10" fill="#ffe8c9" stroke="#d79b00" stroke-dasharray="5 3"/>
+  <text x="590" y="342" text-anchor="middle" class="zone-label" fill="#a37200">Control Plane API</text>
+  <rect x="365" y="360" width="135" height="70" class="node" fill="#945DF2" stroke="#5e3aa8"/>
+  <text x="432" y="388" class="node-label">API Gateway</text>
+  <text x="432" y="404" class="node-sub">HTTP API</text>
+  <text x="432" y="418" class="node-sub">+ JWT authorizer</text>
+  <rect x="525" y="360" width="135" height="70" class="node" fill="#ED7100" stroke="#9c4c00"/>
+  <text x="592" y="384" class="node-label">Lambdas</text>
+  <text x="592" y="400" class="node-sub">projects · orgs · users</text>
+  <text x="592" y="414" class="node-sub">deployments · repos</text>
+  <rect x="685" y="360" width="135" height="70" class="node" fill="#3334B9" stroke="#1d1f70"/>
+  <text x="752" y="388" class="node-label">DynamoDB</text>
+  <text x="752" y="404" class="node-sub">single-table</text>
+  <text x="752" y="418" class="node-sub">design</text>
+  <text x="590" y="470" text-anchor="middle" font-size="10" fill="#a37200">Lambdas grouped by trigger — HTTP API, Cognito, EventBridge, S3, SQS, DDB Stream</text>
+  <text x="590" y="486" text-anchor="middle" font-size="10" fill="#a37200">Typed key-builders in packages/aws · Octokit-based GitHub client</text>
+
+  <rect x="340" y="570" width="500" height="280" rx="10" ry="10" fill="#fadbd8" stroke="#b85450" stroke-dasharray="5 3"/>
+  <text x="590" y="592" text-anchor="middle" class="zone-label" fill="#8a3735">Build Pipeline &amp; Eventing</text>
+  <rect x="365" y="610" width="135" height="70" class="node" fill="#C925D1" stroke="#7c1582"/>
+  <text x="432" y="640" class="node-label">CodeBuild</text>
+  <text x="432" y="656" class="node-sub">per-project</text>
+  <text x="432" y="670" class="node-sub">project</text>
+  <rect x="525" y="610" width="135" height="70" class="node" fill="#E7157B" stroke="#8c0c4a"/>
+  <text x="592" y="638" class="node-label">EventBridge</text>
+  <text x="592" y="654" class="node-sub">build status</text>
+  <text x="592" y="668" class="node-sub">rules</text>
+  <rect x="685" y="610" width="135" height="70" class="node" fill="#ED7100" stroke="#9c4c00"/>
+  <text x="752" y="640" class="node-label">codebuild-status</text>
+  <text x="752" y="656" class="node-sub">Lambda</text>
+  <rect x="365" y="730" width="135" height="70" class="node" fill="#DD344C" stroke="#8a1d2e"/>
+  <text x="432" y="760" class="node-label">ACM</text>
+  <text x="432" y="776" class="node-sub">wildcard cert</text>
+  <rect x="525" y="730" width="295" height="70" class="node" fill="#945DF2" stroke="#5e3aa8"/>
+  <text x="672" y="760" class="node-label">Route 53 / External DNS</text>
+  <text x="672" y="776" class="node-sub">DNS_PROVIDER toggle</text>
+
+  <rect x="870" y="110" width="470" height="740" rx="10" ry="10" fill="#e5f3e1" stroke="#82b366" stroke-dasharray="5 3"/>
+  <text x="1105" y="132" text-anchor="middle" class="zone-label" fill="#3f6b2c">Per-App Hosting (one per deployed project)</text>
+
+  <rect x="900" y="160" width="180" height="70" class="node" fill="#945DF2" stroke="#5e3aa8"/>
+  <text x="990" y="188" class="node-label">CloudFront</text>
+  <text x="990" y="204" class="node-sub">app1.example.com</text>
+  <text x="990" y="218" class="node-sub">+ ACM</text>
+  <rect x="1130" y="160" width="180" height="70" class="node" fill="#7AA116" stroke="#4a6310"/>
+  <text x="1220" y="188" class="node-label">S3 Bucket</text>
+  <text x="1220" y="204" class="node-sub">app1 bundle</text>
+  <text x="1220" y="218" class="node-sub">(unfoldr-dedicated-*)</text>
+
+  <rect x="900" y="260" width="180" height="70" class="node" fill="#945DF2" stroke="#5e3aa8"/>
+  <text x="990" y="288" class="node-label">CloudFront</text>
+  <text x="990" y="304" class="node-sub">app2.example.com</text>
+  <text x="990" y="318" class="node-sub">+ ACM</text>
+  <rect x="1130" y="260" width="180" height="70" class="node" fill="#7AA116" stroke="#4a6310"/>
+  <text x="1220" y="288" class="node-label">S3 Bucket</text>
+  <text x="1220" y="304" class="node-sub">app2 bundle</text>
+
+  <text x="1105" y="370" text-anchor="middle" font-size="11" font-style="italic" fill="#6b7280">… one CloudFront + S3 pair per deployed project …</text>
+
+  <rect x="900" y="400" width="410" height="100" rx="10" ry="10" fill="#fff8e1" stroke="#d6b656" stroke-dasharray="5 3"/>
+  <text x="1105" y="420" text-anchor="middle" class="zone-label" fill="#8a6d00">Edge Logic</text>
+  <rect x="960" y="430" width="290" height="55" class="node" fill="#945DF2" stroke="#5e3aa8"/>
+  <text x="1105" y="455" class="node-label">CloudFront Functions</text>
+  <text x="1105" y="471" class="node-sub">SPA fallback · redirects (packages/cloudfront-fns)</text>
+
+  <rect x="900" y="520" width="410" height="100" rx="10" ry="10" fill="#ede1f0" stroke="#9673a6" stroke-dasharray="5 3"/>
+  <text x="1105" y="540" text-anchor="middle" class="zone-label" fill="#6a4885">Infrastructure as Code</text>
+  <rect x="960" y="550" width="290" height="55" class="node" fill="#E7157B" stroke="#8c0c4a"/>
+  <text x="1105" y="575" class="node-label">AWS CDK v2 (TypeScript)</text>
+  <text x="1105" y="591" class="node-sub">single stack — apps/infra</text>
+
+  <rect x="900" y="640" width="410" height="200" rx="10" ry="10" fill="#f3f4f6" stroke="#9ca3af" stroke-dasharray="5 3"/>
+  <text x="1105" y="660" text-anchor="middle" class="zone-label" fill="#374151">Monorepo</text>
+  <text x="1105" y="685" text-anchor="middle" font-size="11" fill="#374151">pnpm workspaces + Turborepo</text>
+  <text x="1105" y="710" text-anchor="middle" font-size="10" fill="#4b5563">apps/infra · apps/web</text>
+  <text x="1105" y="728" text-anchor="middle" font-size="10" fill="#4b5563">packages: aws · lambdas · github · cloudfront-fns</text>
+  <text x="1105" y="746" text-anchor="middle" font-size="10" fill="#4b5563">logger · nodemailer · types · ui · configs</text>
+  <text x="1105" y="772" text-anchor="middle" font-size="10" fill="#4b5563">TypeScript 5 · ESLint flat config · Prettier</text>
+
+  <path d="M 240 140 L 365 180" class="edge" marker-end="url(#arrow)"/>
+  <text x="270" y="155" class="edge-label">HTTPS (sign-in)</text>
+
+  <path d="M 240 145 L 880 195" class="edge" marker-end="url(#arrow)"/>
+  <text x="500" y="178" class="edge-label">end users → CloudFront</text>
+
+  <path d="M 480 182 L 510 182" class="edge" marker-end="url(#arrow)"/>
+  <text x="487" y="175" class="edge-label">origin</text>
+
+  <path d="M 620 182 L 690 192" class="edge-dashed" marker-end="url(#arrow-dashed)"/>
+  <text x="625" y="178" class="edge-label">Amplify Auth</text>
+
+  <path d="M 485 220 L 432 360" class="edge" marker-end="url(#arrow)"/>
+  <text x="430" y="295" class="edge-label">REST + JWT</text>
+
+  <path d="M 500 395 L 525 395" class="edge" marker-end="url(#arrow)"/>
+
+  <path d="M 660 395 L 685 395" class="edge" marker-end="url(#arrow)"/>
+  <text x="665" y="388" class="edge-label">r/w</text>
+
+  <path d="M 525 395 L 250 372" class="edge-dashed" marker-end="url(#arrow-dashed)"/>
+  <text x="275" y="385" class="edge-label">Octokit (App auth)</text>
+
+  <path d="M 432 430 L 432 610" class="edge" marker-end="url(#arrow)"/>
+  <text x="438" y="525" class="edge-label">StartBuild</text>
+
+  <path d="M 365 645 L 250 447" class="edge-dashed" marker-end="url(#arrow-dashed)"/>
+  <text x="265" y="555" class="edge-label">clone + build</text>
+
+  <path d="M 500 645 L 525 645" class="edge" marker-end="url(#arrow)"/>
+  <text x="492" y="638" class="edge-label">events</text>
+
+  <path d="M 660 645 L 685 645" class="edge" marker-end="url(#arrow)"/>
+
+  <path d="M 752 610 Q 760 540 752 430" class="edge-dashed" marker-end="url(#arrow-dashed)"/>
+  <text x="760" y="525" class="edge-label">update</text>
+  <text x="760" y="538" class="edge-label">deployment</text>
+
+  <path d="M 500 640 L 900 195" class="edge" marker-end="url(#arrow)"/>
+  <text x="710" y="395" class="edge-label">upload bundle to per-project S3</text>
+
+  <path d="M 1080 195 L 1130 195" class="edge" marker-end="url(#arrow)"/>
+  <text x="1085" y="188" class="edge-label">origin</text>
+  <path d="M 1080 295 L 1130 295" class="edge" marker-end="url(#arrow)"/>
+
+  <path d="M 432 730 L 900 230" class="edge-dashed" marker-end="url(#arrow-dashed)"/>
+  <text x="610" y="495" class="edge-label">TLS cert (us-east-1)</text>
+
+  <path d="M 672 730 L 990 330" class="edge-dashed" marker-end="url(#arrow-dashed)"/>
+  <text x="805" y="555" class="edge-label">DNS records</text>
+
+  <path d="M 1105 550 L 1105 510" class="edge-dashed" marker-end="url(#arrow-dashed)"/>
+  <text x="1115" y="535" class="edge-label">provisions</text>
+
+  <rect x="40" y="520" width="240" height="330" rx="10" ry="10" fill="#ffffff" stroke="#9ca3af"/>
+  <text x="160" y="544" text-anchor="middle" class="zone-label" fill="#374151">Legend</text>
+
+  <line x1="60" y1="568" x2="100" y2="568" stroke="#374151" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="110" y="572" font-size="10" fill="#4b5563">request / data flow</text>
+
+  <line x1="60" y1="590" x2="100" y2="590" stroke="#9673a6" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arrow-dashed)"/>
+  <text x="110" y="594" font-size="10" fill="#4b5563">control / auth / IaC</text>
+
+  <rect x="60" y="610" width="14" height="14" fill="#fff8e1" stroke="#d6b656"/>
+  <text x="82" y="622" font-size="10" fill="#4b5563">your AWS account</text>
+
+  <rect x="60" y="632" width="14" height="14" fill="#e5f3e1" stroke="#82b366"/>
+  <text x="82" y="644" font-size="10" fill="#4b5563">static hosting (S3 + CloudFront)</text>
+
+  <rect x="60" y="654" width="14" height="14" fill="#ffe8c9" stroke="#d79b00"/>
+  <text x="82" y="666" font-size="10" fill="#4b5563">control plane (API + data)</text>
+
+  <rect x="60" y="676" width="14" height="14" fill="#fadbd8" stroke="#b85450"/>
+  <text x="82" y="688" font-size="10" fill="#4b5563">build &amp; eventing</text>
+
+  <rect x="60" y="698" width="14" height="14" fill="#ede1f0" stroke="#9673a6"/>
+  <text x="82" y="710" font-size="10" fill="#4b5563">auth / IaC</text>
+
+  <text x="60" y="738" font-size="10" fill="#4b5563" font-style="italic">Per-app hosting fans out —</text>
+  <text x="60" y="752" font-size="10" fill="#4b5563" font-style="italic">one CloudFront + S3 pair</text>
+  <text x="60" y="766" font-size="10" fill="#4b5563" font-style="italic">per deployed project.</text>
+
+  <text x="60" y="800" font-size="10" fill="#6b7280">Source: docs/architecture.drawio</text>
+  <text x="60" y="816" font-size="10" fill="#6b7280">Open in diagrams.net to edit.</text>
+</svg>
